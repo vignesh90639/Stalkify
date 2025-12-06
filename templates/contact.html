@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You | Stalkify</title>
+  <meta name="description" content="Thank you for contacting Stalkify">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  
+  <!-- =======================
+       Header / Navbar
+  ======================= -->
+  <header class="navbar">
+    <h1 class="logo"><i class="fas fa-chart-line"></i> Stalkify</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/simulator">AI Simulator</a>
+    </nav>
+  </header>
+
+  <!-- =======================
+       Success Message
+  ======================= -->
+  <section class="success-section">
+    <div class="success-container">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h1>Thank You{% if name %}, {{ name }}{% endif %}!</h1>
+      <p class="success-message">Your message has been successfully received.</p>
+      <p class="success-info">We'll get back to you as soon as possible.</p>
+      
+      <div class="success-actions">
+        <a href="/" class="btn btn-primary">
+          <i class="fas fa-home"></i> Back to Home
+        </a>
+        <a href="/dashboard" class="btn btn-secondary">
+          <i class="fas fa-chart-bar"></i> Go to Dashboard
+        </a>
+      </div>
+
+      <div class="contact-details">
+        <h3>Need Immediate Assistance?</h3>
+        <div class="contact-methods">
+          <div class="contact-method">
+            <i class="fas fa-envelope"></i>
+            <span>vigneshgotjob@gmail.com</span>
+          </div>
+          <div class="contact-method">
+            <i class="fas fa-phone"></i>
+            <span>+91 8331097721</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================
+       Footer
+  ======================= -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3><i class="fas fa-chart-line"></i> Stalkify</h3>
+        <p>AI-powered stock market intelligence platform</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Stalkify by GIOE. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <style>
+    .success-section {
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+    }
+
+    .success-container {
+      max-width: 600px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 60px 40px;
+      box-shadow: 0 10px 40px rgba(0, 255, 255, 0.2);
+    }
+
+    .success-icon {
+      font-size: 5rem;
+      color: #00ff00;
+      margin-bottom: 30px;
+      animation: scaleIn 0.5s ease;
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .success-container h1 {
+      font-size: 2.5rem;
+      color: #00ffff;
+      margin-bottom: 20px;
+    }
+
+    .success-message {
+      font-size: 1.3rem;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .success-info {
+      color: #aaa;
+      margin-bottom: 40px;
+    }
+
+    .success-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 50px;
+    }
+
+    .contact-details {
+      border-top: 1px solid rgba(0, 255, 255, 0.2);
+      padding-top: 30px;
+      margin-top: 30px;
+    }
+
+    .contact-details h3 {
+      color: #00ffff;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+
+    .contact-methods {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .contact-method {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ccc;
+      font-size: 1rem;
+    }
+
+    .contact-method i {
+      color: #00ffff;
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 768px) {
+      .success-container {
+        padding: 40px 20px;
+      }
+
+      .success-container h1 {
+        font-size: 2rem;
+      }
+
+      .success-actions {
+        flex-direction: column;
+      }
+
+      .contact-methods {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
+
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stalkify | AI-Powered Stock Analysis Platform</title>
+  <meta name="description" content="Professional AI-powered stock market analysis and visualization platform with real-time insights and predictive analytics.">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Main JS -->
+  <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+  
+  <!-- =======================
+       Header / Navbar
+  ======================= -->
+  <header class="navbar">
+    <h1 class="logo">
+      <svg width="40" height="40" viewBox="0 0 100 100" style="vertical-align: middle; margin-right: 10px;">
+        <defs>
+          <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#00ffff;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#0088ff;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <rect x="10" y="10" width="80" height="80" rx="12" fill="none" stroke="url(#logoGradient)" stroke-width="3"/>
+        <path d="M25 65 L35 45 L45 52 L60 30 L75 40" stroke="url(#logoGradient)" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="25" cy="65" r="3.5" fill="url(#logoGradient)"/>
+        <circle cx="35" cy="45" r="3.5" fill="url(#logoGradient)"/>
+        <circle cx="45" cy="52" r="3.5" fill="url(#logoGradient)"/>
+        <circle cx="60" cy="30" r="3.5" fill="url(#logoGradient)"/>
+        <circle cx="75" cy="40" r="3.5" fill="url(#logoGradient)"/>
+      </svg>
+      Stalkify
+    </h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/simulator">AI Simulator</a>
+      <a href="#contact">Contact</a>
+      <a href="/login" class="login-btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+    </nav>
+  </header>
+
+  <!-- =======================
+       Hero Section
+  ======================= -->
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Welcome to <span>Stalkify</span></h2>
+      <p class="hero-subtitle">AI-Powered Stock Market Intelligence Platform</p>
+      <p class="hero-description">
+        Harness the power of artificial intelligence to analyze, predict, and visualize stock market trends. 
+        Make data-driven investment decisions with our advanced analytics dashboard.
+      </p>
+      <div class="hero-buttons">
+        <a href="/dashboard" class="btn btn-primary">
+          <i class="fas fa-rocket"></i> Launch Dashboard
+        </a>
+        <a href="#features" class="btn btn-secondary">
+          <i class="fas fa-info-circle"></i> Learn More
+        </a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <i class="fas fa-database"></i>
+        <h3>300+</h3>
+        <p>Stocks Tracked</p>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-chart-bar"></i>
+        <h3>Real-time</h3>
+        <p>Market Analysis</p>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-robot"></i>
+        <h3>AI-Powered</h3>
+        <p>Predictions</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================
+       Features Section
+  ======================= -->
+  <section id="features" class="features">
+    <div class="section-header">
+      <h2>Powerful Features</h2>
+      <p>Everything you need for intelligent stock market analysis</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-brain"></i>
+        </div>
+        <h3>AI Predictions</h3>
+        <p>Advanced machine learning algorithms analyze historical data to predict future stock movements with high accuracy.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h3>Real-Time Analytics</h3>
+        <p>Monitor live stock prices, market trends, and trading volumes with our real-time data visualization tools.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-bell"></i>
+        </div>
+        <h3>Smart Alerts</h3>
+        <p>Get instant notifications when stocks hit your target prices or when significant market events occur.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-layer-group"></i>
+        </div>
+        <h3>Portfolio Management</h3>
+        <p>Track multiple stocks simultaneously and analyze your portfolio performance with comprehensive metrics.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <h3>Risk Analysis</h3>
+        <p>Evaluate investment risks with our sophisticated risk assessment algorithms and volatility indicators.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-mobile-alt"></i>
+        </div>
+        <h3>Responsive Design</h3>
+        <p>Access your dashboard anywhere, anytime with our fully responsive design optimized for all devices.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================
+       About Section
+  ======================= -->
+  <section id="about" class="about">
+    <div class="about-container">
+      <div class="about-content">
+        <h2>About Stalkify</h2>
+        <p>
+          Stalkify is a cutting-edge stock market analysis platform developed by GIOE (Govt. Institute Of Electronics) Students. 
+          Our mission is to democratize access to professional-grade financial analysis tools powered by artificial intelligence.
+        </p>
+        <p>
+          We combine advanced machine learning algorithms, real-time market data, and intuitive visualizations to help 
+          investors make informed decisions. Whether you're a seasoned trader or just starting your investment journey, 
+          Stalkify provides the insights you need to succeed.
+        </p>
+        <div class="about-features">
+          <div class="about-feature-item">
+            <i class="fas fa-check-circle"></i>
+            <span>Data-Driven Insights</span>
+          </div>
+          <div class="about-feature-item">
+            <i class="fas fa-check-circle"></i>
+            <span>User-Friendly Interface</span>
+          </div>
+          <div class="about-feature-item">
+            <i class="fas fa-check-circle"></i>
+            <span>Advanced AI Models</span>
+          </div>
+          <div class="about-feature-item">
+            <i class="fas fa-check-circle"></i>
+            <span>Secure & Reliable</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-image">
+        <i class="fas fa-laptop-code"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================
+       How It Works Section
+  ======================= -->
+  <section class="how-it-works">
+    <div class="section-header">
+      <h2>How It Works</h2>
+      <p>Get started with Stalkify in three simple steps</p>
+    </div>
+    <div class="steps-container">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-icon"><i class="fas fa-search"></i></div>
+        <h3>Search Stocks</h3>
+        <p>Enter any stock ticker symbol to begin analysis</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-icon"><i class="fas fa-cog"></i></div>
+        <h3>AI Analysis</h3>
+        <p>Our AI processes real-time data and historical trends</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-icon"><i class="fas fa-eye"></i></div>
+        <h3>View Insights</h3>
+        <p>Get actionable insights and predictions instantly</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================
+       Contact Section
+  ======================= -->
+  <section id="contact" class="contact">
+    <div class="section-header">
+      <h2>Get In Touch</h2>
+      <p>Have questions? We'd love to hear from you</p>
+    </div>
+    <div class="contact-container">
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <div>
+            <h4>Email</h4>
+            <p>vigneshgotjob@gmail.com</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-phone"></i>
+          <div>
+            <h4>Phone</h4>
+            <p>91-8331097721</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <div>
+            <h4>Location</h4>
+            <p>GOVERNMENT INSTITUTE OF ELECTRONICS | SECUNDERABAD</p>
+          </div>
+        </div>
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/vignesh-mamindla-881b34383/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+          <a href="https://github.com/vignesh90639" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      <form class="contact-form" action="/contact" method="POST">
+        <div class="form-group">
+          <input type="text" name="name" placeholder="Your Name" required />
+        </div>
+        <div class="form-group">
+          <input type="email" name="email" placeholder="Your Email" required />
+        </div>
+        <div class="form-group">
+          <input type="text" name="subject" placeholder="Subject" required />
+        </div>
+        <div class="form-group">
+          <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-paper-plane"></i> Send Message
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- =======================
+       Footer
+  ======================= -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3><i class="fas fa-chart-line"></i> Stalkify</h3>
+        <p>AI-powered stock market intelligence platform providing real-time analysis and predictions.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="/dashboard">Dashboard</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Newsletter</h4>
+        <p>Subscribe for market insights and updates</p>
+        <form class="newsletter-form">
+          <input type="email" placeholder="Your email" required />
+          <button type="submit"><i class="fas fa-arrow-right"></i></button>
+        </form>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Stalkify by GIOE. All rights reserved.</p>
+      <p>
+        <a href="/terms" style="color: #00ffff; text-decoration: none; margin: 0 10px;">Terms & Conditions</a> | 
+        <a href="/privacy" style="color: #00ffff; text-decoration: none; margin: 0 10px;">Privacy Policy</a>
+      </p>
+      <p>Made with <i class="fas fa-heart"></i> by Team 11</p>
+    </div>
+  </footer>
+
+  <!-- Optional Dashboard Shortcut -->
+  <a href="/dashboard" class="dashboard-btn" aria-label="Go to Dashboard">
+    <i class="fas fa-chart-bar"></i> Dashboard
+  </a>
+
+</body>
+</html>

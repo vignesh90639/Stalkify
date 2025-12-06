@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ symbol }} - Company Details | Stalkify</title>
+  <meta name="description" content="Detailed information and history for {{ symbol }}">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Company CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='company.css') }}">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- TradingView Lightweight Charts (Free, Open Source) -->
+  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body class="company-body">
+
+<!-- =======================
+     Header / Navbar
+======================= -->
+<header class="company-header">
+  <div class="header-left">
+    <h1 class="logo">
+      <svg width="35" height="35" viewBox="0 0 100 100" style="vertical-align: middle;">
+        <defs>
+          <linearGradient id="companyLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#00ffff;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#0088ff;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <rect x="10" y="10" width="80" height="80" rx="12" fill="none" stroke="url(#companyLogoGradient)" stroke-width="3"/>
+        <path d="M25 65 L35 45 L45 52 L60 30 L75 40" stroke="url(#companyLogoGradient)" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="25" cy="65" r="3.5" fill="url(#companyLogoGradient)"/>
+        <circle cx="35" cy="45" r="3.5" fill="url(#companyLogoGradient)"/>
+        <circle cx="45" cy="52" r="3.5" fill="url(#companyLogoGradient)"/>
+        <circle cx="60" cy="30" r="3.5" fill="url(#companyLogoGradient)"/>
+        <circle cx="75" cy="40" r="3.5" fill="url(#companyLogoGradient)"/>
+      </svg>
+      Stalkify
+    </h1>
+  </div>
+  <nav class="company-nav">
+    <a href="/" class="nav-link"><i class="fas fa-home"></i> Home</a>
+    <a href="/dashboard" class="nav-link active"><i class="fas fa-chart-bar"></i> Dashboard</a>
+    <a href="/simulator" class="nav-link"><i class="fas fa-flask"></i> Simulator</a>
+  </nav>
+</header>
+
+<!-- =======================
+     Loading State
+======================= -->
+<div class="loading-screen" id="loading-screen">
+  <i class="fas fa-spinner fa-spin"></i>
+  <p>Loading company data...</p>
+</div>
+
+<!-- =======================
+     Main Content
+======================= -->
+<main class="company-container" id="company-content" style="display:none;">
+
+  <!-- Company Header -->
+  <section class="company-hero">
+    <div class="company-info-header">
+      <div class="company-title">
+        <div class="title-row">
+          <h1 id="company-name">Loading...</h1>
+          <span class="company-symbol">{{ symbol }}</span>
+        </div>
+        <p class="company-description-short" id="company-sector-info">-</p>
+      </div>
+      <div class="company-price-section">
+        <div class="price-main" id="current-price">$0.00</div>
+        <div class="price-change" id="price-change">+$0.00 (0.00%)</div>
+        <div class="price-note">Last Updated Now</div>
+      </div>
+    </div>
+    <div class="company-action-buttons">
+      <button class="action-btn btn-compare"><i class="fas fa-balance-scale"></i> Compare</button>
+      <button class="action-btn btn-alerts"><i class="fas fa-bell"></i> Set Alert</button>
+      <button class="action-btn btn-add-portfolio"><i class="fas fa-plus"></i> Add to Portfolio</button>
+    </div>
+  </section>
+
+  <!-- Quick Stats -->
+  <section class="quick-stats">
+    <div class="stat-box stat-box-primary">
+      <div class="stat-icon"><i class="fas fa-arrow-right"></i></div>
+      <div class="stat-content">
+        <div class="stat-label">Open Price</div>
+        <div class="stat-value" id="stat-open">-</div>
+      </div>
+    </div>
+    <div class="stat-box stat-box-success">
+      <div class="stat-icon"><i class="fas fa-arrow-up"></i></div>
+      <div class="stat-content">
+        <div class="stat-label">Day High</div>
+        <div class="stat-value" id="stat-high">-</div>
+      </div>
+    </div>
+    <div class="stat-box stat-box-warning">
+      <div class="stat-icon"><i class="fas fa-arrow-down"></i></div>
+      <div class="stat-content">
+        <div class="stat-label">Day Low</div>
+        <div class="stat-value" id="stat-low">-</div>
+      </div>
+    </div>
+    <div class="stat-box stat-box-info">
+      <div class="stat-icon"><i class="fas fa-volume-up"></i></div>
+      <div class="stat-content">
+        <div class="stat-label">Volume</div>
+        <div class="stat-value" id="stat-volume">-</div>
+      </div>
+    </div>
+    <div class="stat-box stat-box-secondary">
+      <div class="stat-icon"><i class="fas fa-chart-pie"></i></div>
+      <div class="stat-content">
+        <div class="stat-label">Market Cap</div>
+        <div class="stat-value" id="stat-marketcap">-</div>
+      </div>
+    </div>
+    <div class="stat-box stat-box-accent">
+      <div class="stat-icon"><i class="fas fa-calculator"></i></div>
+      <div class="stat-content">
+        <div class="stat-label">P/E Ratio</div>
+        <div class="stat-value" id="stat-pe">-</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Grid -->
+  <div class="company-grid">
+    
+    <!-- Price Chart -->
+    <section class="chart-section">
+      <h2><i class="fas fa-chart-area"></i> Interactive Price Chart</h2>
+      <div class="chart-controls">
+        <button onclick="changeChartPeriod('1mo')" class="chart-btn">1M</button>
+        <button onclick="changeChartPeriod('3mo')" class="chart-btn">3M</button>
+        <button onclick="changeChartPeriod('6mo')" class="chart-btn">6M</button>
+        <button onclick="changeChartPeriod('1y')" class="chart-btn active">1Y</button>
+      </div>
+      <!-- TradingView Lightweight Chart Container -->
+      <div id="tradingview-chart" style="height: 500px; background: #1a1a1a; border-radius: 8px; margin: 20px 0;"></div>
+    </section>
+
+    <!-- Company Info -->
+    <section class="info-section">
+      <h2><i class="fas fa-info-circle"></i> Company Overview</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label"><i class="fas fa-industry"></i> Sector</span>
+          <span class="info-value" id="info-sector">-</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label"><i class="fas fa-briefcase"></i> Industry</span>
+          <span class="info-value" id="info-industry">-</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label"><i class="fas fa-users"></i> Employees</span>
+          <span class="info-value" id="info-employees">-</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label"><i class="fas fa-globe"></i> Website</span>
+          <span class="info-value"><a href="#" id="info-website" target="_blank">-</a></span>
+        </div>
+      </div>
+      <div class="company-description">
+        <h3>About the Company</h3>
+        <p id="company-desc">Loading description...</p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Financial Metrics -->
+  <section class="metrics-section">
+    <h2><i class="fas fa-calculator"></i> Key Financial Metrics</h2>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fas fa-arrow-up"></i></div>
+        <div class="metric-content">
+          <div class="metric-label">52 Week High</div>
+          <div class="metric-value" id="metric-52high">$0.00</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fas fa-arrow-down"></i></div>
+        <div class="metric-content">
+          <div class="metric-label">52 Week Low</div>
+          <div class="metric-value" id="metric-52low">$0.00</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fas fa-dollar-sign"></i></div>
+        <div class="metric-content">
+          <div class="metric-label">EPS (Earnings Per Share)</div>
+          <div class="metric-value" id="metric-eps">$0.00</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fas fa-percentage"></i></div>
+        <div class="metric-content">
+          <div class="metric-label">Dividend Yield</div>
+          <div class="metric-value" id="metric-dividend">0.00%</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fas fa-chart-line"></i></div>
+        <div class="metric-content">
+          <div class="metric-label">Beta</div>
+          <div class="metric-value" id="metric-beta">0.00</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon"><i class="fas fa-volume-up"></i></div>
+        <div class="metric-content">
+          <div class="metric-label">Average Volume</div>
+          <div class="metric-value" id="metric-avgvol">0</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Historical Data Table -->
+  <section class="history-section">
+    <h2><i class="fas fa-history"></i> Historical Data (Last 30 Days)</h2>
+    <div class="table-wrapper">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Open</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Close</th>
+            <th>Volume</th>
+          </tr>
+        </thead>
+        <tbody id="history-tbody">
+          <tr><td colspan="6" class="loading-row">Loading historical data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<!-- =======================
+     Footer
+======================= -->
+<footer class="company-footer">
+  <p>&copy; 2025 Stalkify by GIOE. All rights reserved.</p>
+  <p>Data provided for informational purposes only</p>
+</footer>
+
+<!-- Back to Dashboard Button -->
+<a href="/dashboard" class="back-btn" aria-label="Back to Dashboard">
+  <i class="fas fa-arrow-left"></i>
+</a>
+
+<script>
+  const symbol = "{{ symbol }}";
+</script>
+<script src="{{ url_for('static', filename='company.js') }}"></script>
+</body>
+</html>

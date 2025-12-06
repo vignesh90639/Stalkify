@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy | Stalkify</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .policy-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 20px;
+      color: #e4e4e4;
+    }
+    .policy-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    .policy-header h1 {
+      font-size: 2.5rem;
+      color: #00ffff;
+      margin-bottom: 10px;
+    }
+    .policy-header p {
+      color: #aaa;
+    }
+    .policy-section {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 25px;
+    }
+    .policy-section h2 {
+      color: #00ffff;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+    .policy-section p, .policy-section li {
+      color: #ccc;
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+    .policy-section ul {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  
+  <header class="navbar">
+    <h1 class="logo">
+      <svg width="35" height="35" viewBox="0 0 100 100" style="vertical-align: middle; margin-right: 8px;">
+        <circle cx="50" cy="50" r="45" fill="#00ffff" opacity="0.1"/>
+        <path d="M30 70 L30 50 L40 45 L50 55 L60 40 L70 30" stroke="#00ffff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="30" cy="70" r="4" fill="#00ffff"/>
+        <circle cx="40" cy="45" r="4" fill="#00ffff"/>
+        <circle cx="50" cy="55" r="4" fill="#00ffff"/>
+        <circle cx="60" cy="40" r="4" fill="#00ffff"/>
+        <circle cx="70" cy="30" r="4" fill="#00ffff"/>
+      </svg>
+      Stalkify
+    </h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+    </nav>
+  </header>
+
+  <div class="policy-container">
+    <div class="policy-header">
+      <h1><i class="fas fa-shield-alt"></i> Privacy Policy</h1>
+      <p>Last Updated: November 15, 2025</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>1. Information We Collect</h2>
+      <p>We collect information that you provide directly to us, including:</p>
+      <ul>
+        <li><strong>Account Information:</strong> Username, email address, full name</li>
+        <li><strong>OAuth Data:</strong> Profile information from Google, GitHub, or LinkedIn (if you use social login)</li>
+        <li><strong>Portfolio Data:</strong> Stock symbols you track, watchlist, and portfolio holdings</li>
+        <li><strong>Usage Data:</strong> Pages visited, features used, and interaction patterns</li>
+      </ul>
+    </div>
+
+    <div class="policy-section">
+      <h2>2. How We Use Your Information</h2>
+      <p>We use the information we collect to:</p>
+      <ul>
+        <li>Provide, maintain, and improve our services</li>
+        <li>Personalize your experience and deliver relevant stock analysis</li>
+        <li>Generate AI predictions based on your preferences</li>
+        <li>Communicate with you about updates and features</li>
+        <li>Monitor and analyze usage patterns to improve our platform</li>
+        <li>Protect against fraudulent or unauthorized activity</li>
+      </ul>
+    </div>
+
+    <div class="policy-section">
+      <h2>3. Data Storage and Security</h2>
+      <p>We take data security seriously:</p>
+      <ul>
+        <li>All passwords are hashed using industry-standard encryption</li>
+        <li>Data is stored securely in our MySQL database</li>
+        <li>We use SSL/TLS encryption for data transmission</li>
+        <li>OAuth providers handle authentication securely</li>
+        <li>Regular security audits and updates</li>
+      </ul>
+      <p>However, no method of transmission over the internet is 100% secure. We cannot guarantee absolute security.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>4. Information Sharing</h2>
+      <p>We do NOT sell, trade, or rent your personal information to third parties. We may share information:</p>
+      <ul>
+        <li>With your consent</li>
+        <li>To comply with legal obligations</li>
+        <li>To protect our rights and prevent fraud</li>
+        <li>With service providers who assist in operating our platform (under strict confidentiality)</li>
+      </ul>
+    </div>
+
+    <div class="policy-section">
+      <h2>5. Third-Party Services</h2>
+      <p>Our service uses third-party APIs and services:</p>
+      <ul>
+        <li><strong>Yahoo Finance:</strong> For real-time stock market data</li>
+        <li><strong>OAuth Providers:</strong> Google, GitHub, LinkedIn for authentication</li>
+        <li><strong>Chart.js:</strong> For data visualization</li>
+      </ul>
+      <p>These services have their own privacy policies, and we recommend reviewing them.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>6. Cookies and Tracking</h2>
+      <p>We use session cookies to:</p>
+      <ul>
+        <li>Keep you logged in during your session</li>
+        <li>Remember your preferences and settings</li>
+        <li>Analyze usage patterns and improve our service</li>
+      </ul>
+      <p>You can control cookies through your browser settings.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>7. Your Rights</h2>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Access your personal data</li>
+        <li>Correct inaccurate data</li>
+        <li>Request deletion of your account and data</li>
+        <li>Export your data</li>
+        <li>Opt-out of communications</li>
+      </ul>
+      <p>Contact us at vigneshgotjob@gmail.com to exercise these rights.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>8. Children's Privacy</h2>
+      <p>Our Service is not intended for users under the age of 18. We do not knowingly collect personal information from children under 18.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>9. Changes to Privacy Policy</h2>
+      <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>10. Contact Us</h2>
+      <p>If you have questions about this Privacy Policy, contact us:</p>
+      <ul>
+        <li><strong>Email:</strong> vigneshgotjob@gmail.com</li>
+        <li><strong>Phone:</strong> +91 8331097721</li>
+        <li><strong>Developer:</strong>Team 11</li>
+        <li><strong>Institution:</strong> Government Institute of Electronics, Secunderabad</li>
+      </ul>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="/" class="btn btn-primary"><i class="fas fa-home"></i> Back to Home</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>&copy; 2025 Stalkify by GIOE. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

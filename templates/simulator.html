@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What-If Simulator | Stalkify AI</title>
+  <meta name="description" content="AI-powered what-if stock market simulator with predictive analytics">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Simulator CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='simulator.css') }}">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="simulator-body">
+
+<!-- =======================
+     Header / Navbar
+======================= -->
+<header class="simulator-header">
+  <div class="header-left">
+    <h1 class="logo">
+      <svg width="35" height="35" viewBox="0 0 100 100" style="vertical-align: middle;">
+        <defs>
+          <linearGradient id="simLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#00ffff;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#0088ff;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <rect x="10" y="10" width="80" height="80" rx="12" fill="none" stroke="url(#simLogoGradient)" stroke-width="3"/>
+        <path d="M25 65 L35 45 L45 52 L60 30 L75 40" stroke="url(#simLogoGradient)" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="25" cy="65" r="3.5" fill="url(#simLogoGradient)"/>
+        <circle cx="35" cy="45" r="3.5" fill="url(#simLogoGradient)"/>
+        <circle cx="45" cy="52" r="3.5" fill="url(#simLogoGradient)"/>
+        <circle cx="60" cy="30" r="3.5" fill="url(#simLogoGradient)"/>
+        <circle cx="75" cy="40" r="3.5" fill="url(#simLogoGradient)"/>
+      </svg>
+      Simulator
+    </h1>
+  </div>
+  <nav class="simulator-nav">
+    <a href="/" class="nav-item"><i class="fas fa-home"></i> Home</a>
+    <a href="/dashboard" class="nav-item"><i class="fas fa-chart-bar"></i> Dashboard</a>
+    <a href="#predictor" class="nav-item"><i class="fas fa-crystal-ball"></i> Predictor</a>
+    <a href="#scenarios" class="nav-item"><i class="fas fa-flask"></i> Scenarios</a>
+  </nav>
+</header>
+
+<!-- =======================
+     Main Container
+======================= -->
+<main class="simulator-container">
+
+  <!-- =======================
+       AI PRICE PREDICTOR
+  ======================= -->
+  <section id="predictor" class="sim-section fade-in">
+    <div class="section-header">
+      <h2><i class="fas fa-crystal-ball"></i> AI Price Predictor</h2>
+      <p>Advanced machine learning predictions for future stock prices</p>
+    </div>
+
+    <div class="predictor-card">
+      <div class="input-section">
+        <div class="input-group-sim">
+          <label><i class="fas fa-search"></i> Stock Symbol</label>
+          <input type="text" id="predict-symbol" placeholder="e.g., AAPL" />
+        </div>
+        <div class="input-group-sim">
+          <label><i class="fas fa-calendar"></i> Prediction Days</label>
+          <input type="number" id="predict-days" placeholder="30" value="30" min="1" max="90" />
+        </div>
+        <button onclick="runPrediction()" class="btn-predict">
+          <i class="fas fa-magic"></i> Generate Prediction
+        </button>
+      </div>
+
+      <div class="prediction-results" id="prediction-results" style="display:none;">
+        <div class="result-header">
+          <h3 id="prediction-title">Prediction Results</h3>
+          <div class="prediction-stats">
+            <div class="stat">
+              <span class="label">Current Price</span>
+              <span class="value" id="current-price">$0.00</span>
+            </div>
+            <div class="stat">
+              <span class="label">Predicted Trend</span>
+              <span class="value" id="predicted-trend">-</span>
+            </div>
+            <div class="stat">
+              <span class="label">30-Day Target</span>
+              <span class="value" id="target-price">$0.00</span>
+            </div>
+          </div>
+        </div>
+        <div class="chart-container-sim">
+          <canvas id="predictionChart"></canvas>
+        </div>
+      </div>
+
+      <div class="loading-prediction" id="loading-prediction" style="display:none;">
+        <i class="fas fa-spinner fa-spin"></i> AI is analyzing stock data...
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================
+       WHAT-IF SCENARIOS
+  ======================= -->
+  <section id="scenarios" class="sim-section fade-in">
+    <div class="section-header">
+      <h2><i class="fas fa-flask"></i> What-If Scenarios</h2>
+      <p>Simulate different market conditions and their impact on your portfolio</p>
+    </div>
+
+    <div class="scenarios-grid">
+      <!-- Input Panel -->
+      <div class="scenario-input-panel">
+        <h3><i class="fas fa-cog"></i> Scenario Configuration</h3>
+        
+        <div class="input-group-sim">
+          <label><i class="fas fa-tag"></i> Stock Symbol</label>
+          <input type="text" id="sim-symbol" placeholder="e.g., TSLA" />
+        </div>
+
+        <div class="input-group-sim">
+          <label><i class="fas fa-layer-group"></i> Number of Shares</label>
+          <input type="number" id="sim-shares" placeholder="100" value="100" min="1" />
+        </div>
+
+        <div class="input-group-sim">
+          <label><i class="fas fa-clipboard-list"></i> Scenario Type</label>
+          <select id="sim-scenario" onchange="updateScenarioInfo()">
+            <option value="market_crash">Market Crash (-20%)</option>
+            <option value="bull_market">Bull Market (+25%)</option>
+            <option value="recession">Recession (-15%)</option>
+            <option value="tech_boom">Tech Boom (+30%)</option>
+            <option value="rate_hike">Rate Hike (-8%)</option>
+            <option value="volatility">High Volatility (±0% net)</option>
+            <option value="inflation">High Inflation (-10%)</option>
+            <option value="deflation">Deflation (-12%)</option>
+            <option value="war">Geopolitical Crisis (-18%)</option>
+            <option value="recovery">Economic Recovery (+20%)</option>
+          </select>
+        </div>
+
+        <div class="input-group-sim">
+          <label><i class="fas fa-clock"></i> Time Horizon</label>
+          <select id="sim-timeframe">
+            <option value="short">Short Term (1-3 months)</option>
+            <option value="medium" selected>Medium Term (6-12 months)</option>
+            <option value="long">Long Term (1-5 years)</option>
+          </select>
+        </div>
+
+        <div class="input-group-sim">
+          <label><i class="fas fa-dollar-sign"></i> Investment Amount</label>
+          <input type="number" id="sim-investment" placeholder="Enter total investment" value="10000" min="1" step="100" />
+        </div>
+
+        <div class="scenario-info" id="scenario-info">
+          <i class="fas fa-info-circle"></i>
+          <p>Select a pre-defined scenario or create your own custom scenario</p>
+        </div>
+
+        <button onclick="runSimulation()" class="btn-simulate">
+          <i class="fas fa-play"></i> Run Simulation
+        </button>
+      </div>
+
+      <!-- Results Panel -->
+      <div class="scenario-results-panel">
+        <h3><i class="fas fa-chart-pie"></i> Simulation Results</h3>
+        
+        <div class="sim-results-content" id="sim-results">
+          <div class="no-results">
+            <i class="fas fa-flask"></i>
+            <p>Configure and run a simulation to see results</p>
+          </div>
+        </div>
+
+        <div class="loading-sim" id="loading-sim" style="display:none;">
+          <i class="fas fa-spinner fa-spin"></i> Running simulation...
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================
+       PRE-BUILT SCENARIOS
+  ======================= -->
+  <section class="sim-section fade-in">
+    <div class="section-header">
+      <h2><i class="fas fa-th"></i> Quick Scenarios</h2>
+      <p>Test popular market scenarios with one click</p>
+    </div>
+
+    <div class="quick-scenarios">
+      <div class="quick-scenario-card" onclick="loadQuickScenario('market_crash')">
+        <div class="icon-wrapper crash">
+          <i class="fas fa-arrow-down"></i>
+        </div>
+        <h4>Market Crash</h4>
+        <p>-20% decline across markets</p>
+        <span class="badge negative">High Risk</span>
+      </div>
+
+      <div class="quick-scenario-card" onclick="loadQuickScenario('bull_market')">
+        <div class="icon-wrapper bull">
+          <i class="fas fa-arrow-up"></i>
+        </div>
+        <h4>Bull Market</h4>
+        <p>+25% market rally</p>
+        <span class="badge positive">Opportunity</span>
+      </div>
+
+      <div class="quick-scenario-card" onclick="loadQuickScenario('recession')">
+        <div class="icon-wrapper recession">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h4>Recession</h4>
+        <p>-15% economic downturn</p>
+        <span class="badge warning">Moderate Risk</span>
+      </div>
+
+      <div class="quick-scenario-card" onclick="loadQuickScenario('tech_boom')">
+        <div class="icon-wrapper tech">
+          <i class="fas fa-rocket"></i>
+        </div>
+        <h4>Tech Boom</h4>
+        <p>+30% tech sector surge</p>
+        <span class="badge positive">High Growth</span>
+      </div>
+
+      <div class="quick-scenario-card" onclick="loadQuickScenario('rate_hike')">
+        <div class="icon-wrapper rate">
+          <i class="fas fa-percentage"></i>
+        </div>
+        <h4>Rate Hike</h4>
+        <p>-8% interest rate impact</p>
+        <span class="badge warning">Caution</span>
+      </div>
+
+      <div class="quick-scenario-card" onclick="loadQuickScenario('volatility')">
+        <div class="icon-wrapper volatility">
+          <i class="fas fa-wave-square"></i>
+        </div>
+        <h4>High Volatility</h4>
+        <p>Unpredictable swings</p>
+        <span class="badge warning">Uncertain</span>
+      </div>
+
+      <div class="quick-scenario-card" onclick="loadQuickScenario('inflation')">
+        <div class="icon-wrapper recession">
+          <i class="fas fa-fire"></i>
+        </div>
+        <h4>High Inflation</h4>
+        <p>-10% purchasing power impact</p>
+        <span class="badge negative">Risk</span>
+      </div>
+
+      <div class="quick-scenario-card" onclick="loadQuickScenario('war')">
+        <div class="icon-wrapper crash">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h4>Geopolitical Crisis</h4>
+        <p>-18% market panic</p>
+        <span class="badge negative">Crisis</span>
+      </div>
+
+      <div class="quick-scenario-card" onclick="loadQuickScenario('recovery')">
+        <div class="icon-wrapper bull">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h4>Economic Recovery</h4>
+        <p>+20% post-crisis bounce</p>
+        <span class="badge positive">Growth</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================
+       COMPARISON TOOL
+  ======================= -->
+  <section class="sim-section fade-in">
+    <div class="section-header">
+      <h2><i class="fas fa-exchange-alt"></i> Compare Multiple Scenarios</h2>
+      <p>See how different scenarios affect the same stock side-by-side</p>
+    </div>
+
+    <div class="comparison-container">
+      <div class="comparison-input">
+        <div class="input-group-sim">
+          <label><i class="fas fa-tag"></i> Stock to Compare</label>
+          <input type="text" id="compare-symbol" placeholder="e.g., AAPL" />
+        </div>
+        <div class="input-group-sim">
+          <label><i class="fas fa-layer-group"></i> Shares</label>
+          <input type="number" id="compare-shares" placeholder="100" value="100" min="1" />
+        </div>
+        <button onclick="runComparison()" class="btn-simulate">
+          <i class="fas fa-balance-scale"></i> Compare Scenarios
+        </button>
+      </div>
+
+      <div class="comparison-results" id="comparison-results">
+        <div class="no-results">
+          <i class="fas fa-balance-scale"></i>
+          <p>Enter a stock symbol and click "Compare Scenarios" to see results</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- =======================
+     Footer
+======================= -->
+<footer class="simulator-footer">
+  <div class="footer-content">
+    <p>&copy; 2025 Stalkify by GIOE. All rights reserved.</p>
+    <p>AI-powered predictions are for educational purposes only</p>
+  </div>
+</footer>
+
+<!-- Home Button -->
+<a href="/" class="home-btn" aria-label="Go to Home">
+  <i class="fas fa-home"></i>
+</a>
+
+<script src="{{ url_for('static', filename='simulator.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stalkify Dashboard | AI Stock Analytics</title>
+  <meta name="description" content="Real-time stock market analysis dashboard with AI-powered insights and predictions.">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Dashboard CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dashboard-body">
+
+<!-- =======================
+     Header / Navbar
+======================= -->
+<header class="dashboard-header">
+  <div class="header-left">
+    <h1 class="logo">
+      <svg width="35" height="35" viewBox="0 0 100 100" style="vertical-align: middle;">
+        <defs>
+          <linearGradient id="dashLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#00ffff;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#0088ff;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <rect x="10" y="10" width="80" height="80" rx="12" fill="none" stroke="url(#dashLogoGradient)" stroke-width="3"/>
+        <path d="M25 65 L35 45 L45 52 L60 30 L75 40" stroke="url(#dashLogoGradient)" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="25" cy="65" r="3.5" fill="url(#dashLogoGradient)"/>
+        <circle cx="35" cy="45" r="3.5" fill="url(#dashLogoGradient)"/>
+        <circle cx="45" cy="52" r="3.5" fill="url(#dashLogoGradient)"/>
+        <circle cx="60" cy="30" r="3.5" fill="url(#dashLogoGradient)"/>
+        <circle cx="75" cy="40" r="3.5" fill="url(#dashLogoGradient)"/>
+      </svg>
+      Dashboard
+    </h1>
+  </div>
+  <nav class="dashboard-nav">
+    <a href="/" class="nav-item"><i class="fas fa-home"></i> Home</a>
+    <a href="#overview" class="nav-item"><i class="fas fa-tachometer-alt"></i> Overview</a>
+    <a href="#stocks" class="nav-item"><i class="fas fa-list"></i> Stocks</a>
+    <a href="#ai" class="nav-item"><i class="fas fa-brain"></i> AI Insights</a>
+    <a href="#news" class="nav-item"><i class="fas fa-newspaper"></i> News</a>
+    <a href="/simulator" class="nav-item simulator-btn"><i class="fas fa-flask"></i> Simulator</a>
+    <a href="/logout" class="nav-item logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </nav>
+</header>
+
+<!-- =======================
+     Main Dashboard Container
+======================= -->
+<main class="dashboard-container">
+
+  <!-- =======================
+       OVERVIEW SECTION
+  ======================= -->
+  <section id="overview" class="dash-section fade-in">
+    <div class="section-header">
+      <h2><i class="fas fa-tachometer-alt"></i> Market Overview</h2>
+      <p>Real-time market analytics and performance metrics</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card stat-card-primary">
+        <div class="stat-icon">
+          <i class="fas fa-database"></i>
+        </div>
+        <div class="stat-content">
+          <h3 id="total-stocks">0</h3>
+          <p>Stocks Tracked</p>
+          <div class="stat-badge">+5 this week</div>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card-success">
+        <div class="stat-icon">
+          <i class="fas fa-arrow-trend-up"></i>
+        </div>
+        <div class="stat-content">
+          <h3 id="buy-signals">0</h3>
+          <p>Buy Signals</p>
+          <div class="stat-badge">Bullish</div>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card-warning">
+        <div class="stat-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="stat-content">
+          <h3 id="high-risk-count">0</h3>
+          <p>High Risk Stocks</p>
+          <div class="stat-badge">Monitor</div>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card-info">
+        <div class="stat-icon">
+          <i class="fas fa-brain"></i>
+        </div>
+        <div class="stat-content">
+          <h3 id="top-ai-signal">N/A</h3>
+          <p>AI Prediction Score</p>
+          <div class="stat-badge">ML Powered</div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- Highest Risk Stock Card -->
+    <div class="chart-card" style="margin-top: 20px; background: rgba(255, 68, 68, 0.1); border-color: rgba(255, 68, 68, 0.3);">
+      <h3><i class="fas fa-exclamation-circle"></i> Highest Risk Alert</h3>
+      <div id="highest-risk-card" style="min-height: 120px; display: flex; align-items: center; justify-content: center;">
+        <p class="no-data"><i class="fas fa-spinner fa-spin"></i> Loading...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================
+       QUICK SCENARIOS SECTION
+  ======================= -->
+  <section id="quick-scenarios" class="dash-section fade-in">
+    <div class="section-header">
+      <h2><i class="fas fa-flask"></i> Quick Scenarios</h2>
+      <p>Test popular market scenarios with one click</p>
+    </div>
+
+    <div class="quick-scenarios-grid">
+      <div class="quick-scenario-card" onclick="loadQuickScenario('market_crash')">
+        <div class="scenario-icon crash">
+          <i class="fas fa-arrow-down"></i>
+        </div>
+        <h4>Market Crash</h4>
+        <p>-20% decline across markets</p>
+        <span class="scenario-badge negative">High Risk</span>
+      </div>
+
+      <div class="quick-scenario-card" onclick="loadQuickScenario('bull_market')">
+        <div class="scenario-icon bull">
+          <i class="fas fa-arrow-up"></i>
+        </div>
+        <h4>Bull Market</h4>
+        <p>+25% market rally</p>
+        <span class="scenario-badge positive">Opportunity</span>
+      </div>
+
+      <div class="quick-scenario-card" onclick="loadQuickScenario('recession')">
+        <div class="scenario-icon recession">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h4>Recession</h4>
+        <p>-15% economic downturn</p>
+        <span class="scenario-badge warning">Moderate Risk</span>
+      </div>
+
+      <div class="quick-scenario-card" onclick="loadQuickScenario('tech_boom')">
+        <div class="scenario-icon tech">
+          <i class="fas fa-rocket"></i>
+        </div>
+        <h4>Tech Boom</h4>
+        <p>+30% tech sector surge</p>
+        <span class="scenario-badge positive">High Growth</span>
+      </div>
+
+      <div class="quick-scenario-card" onclick="loadQuickScenario('rate_hike')">
+        <div class="scenario-icon rate">
+          <i class="fas fa-percentage"></i>
+        </div>
+        <h4>Rate Hike</h4>
+        <p>-8% interest rate impact</p>
+        <span class="scenario-badge warning">Caution</span>
+      </div>
+
+      <div class="quick-scenario-card" onclick="loadQuickScenario('recovery')">
+        <div class="scenario-icon bull">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h4>Economic Recovery</h4>
+        <p>+20% post-crisis bounce</p>
+        <span class="scenario-badge positive">Growth</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================
+       ADD COMPANY SECTION
+  ======================= -->
+  <section id="add-company" class="dash-section fade-in">
+    <div class="section-header">
+      <h2><i class="fas fa-plus-circle"></i> Add New Stock</h2>
+      <p>Track additional stocks by entering their symbol</p>
+    </div>
+    <div class="form-card">
+      <div class="input-group">
+        <i class="fas fa-search"></i>
+        <input type="text" id="company-symbol" placeholder="Enter stock symbol (e.g., AAPL, MSFT, GOOGL)">
+        <button onclick="addCompany()" class="btn-primary">
+          <i class="fas fa-plus"></i> Add Stock
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================
+       STOCKS TABLE SECTION
+  ======================= -->
+  <section id="stocks" class="dash-section fade-in">
+    <div class="section-header">
+      <h2><i class="fas fa-list-ul"></i> Live Stock Market Data</h2>
+      <p>Real-time stock prices, metrics, and AI signals</p>
+    </div>
+
+    <div class="table-controls">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="search" placeholder="Search by name or symbol...">
+      </div>
+      <div class="filter-box">
+        <i class="fas fa-filter"></i>
+        <select id="filter">
+          <option value="All">All Risk Levels</option>
+          <option value="Safe">Safe</option>
+          <option value="Moderate">Moderate</option>
+          <option value="Bold">High Risk</option>
+        </select>
+      </div>
+      <button onclick="refreshData()" class="refresh-btn">
+        <i class="fas fa-sync-alt"></i> Refresh
+      </button>
+      <!-- Admin: trigger server-side batch refresh (background) -->
+      <button onclick="adminRefresh(this)" class="admin-refresh-btn" title="Trigger server refresh">
+        <i class="fas fa-play-circle"></i> Server Refresh
+      </button>
+    </div>
+
+    <div class="table-container">
+      <table id="stocks-table" class="stocks-table">
+        <thead>
+          <tr>
+            <th><i class="fas fa-building"></i> Company</th>
+            <th><i class="fas fa-tag"></i> Symbol</th>
+            <th><i class="fas fa-dollar-sign"></i> Price</th>
+            <th><i class="fas fa-percent"></i> Change</th>
+            <th><i class="fas fa-shield-alt"></i> Risk</th>
+            <th><i class="fas fa-chart-bar"></i> Market Cap</th>
+            <th><i class="fas fa-calculator"></i> P/E Ratio</th>
+            <th><i class="fas fa-percentage"></i> Dividend</th>
+            <th><i class="fas fa-arrow-up"></i> 52W High</th>
+            <th><i class="fas fa-arrow-down"></i> 52W Low</th>
+            <th><i class="fas fa-volume-up"></i> Volume</th>
+            <th><i class="fas fa-cog"></i> Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="12" class="loading-row">
+              <i class="fas fa-spinner fa-spin"></i> Loading stock data...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- =======================
+       AI INSIGHTS SECTION
+  ======================= -->
+  <section id="ai" class="dash-section fade-in">
+    <div class="section-header">
+      <h2><i class="fas fa-brain"></i> AI-Powered Analysis</h2>
+      <p>Machine learning predictions and sentiment analysis</p>
+    </div>
+
+    <div class="form-card">
+      <h3><i class="fas fa-robot"></i> Add Custom AI Analysis</h3>
+      <div class="ai-form">
+        <div class="form-row">
+          <div class="input-group">
+            <label><i class="fas fa-tag"></i> Symbol</label>
+            <input type="text" id="ai-symbol" placeholder="e.g., AAPL">
+          </div>
+          <div class="input-group">
+            <label><i class="fas fa-star"></i> AI Score (0-100)</label>
+            <input type="number" id="ai-score" placeholder="85" min="0" max="100">
+          </div>
+          <div class="input-group">
+            <label><i class="fas fa-smile"></i> Sentiment</label>
+            <input type="text" id="ai-sentiment" placeholder="Bullish/Neutral/Bearish">
+          </div>
+          <div class="input-group">
+            <label><i class="fas fa-shield-alt"></i> Risk Level</label>
+            <select id="ai-risk">
+              <option value="Safe">Safe</option>
+              <option value="Moderate">Moderate</option>
+              <option value="Bold">High Risk</option>
+            </select>
+          </div>
+        </div>
+        <button onclick="addAIAnalysis()" class="btn-primary">
+          <i class="fas fa-save"></i> Save AI Analysis
+        </button>
+      </div>
+    </div>
+
+    <div class="ai-cards-container">
+      <div class="ai-cards">
+        <div class="loading-card">
+          <i class="fas fa-spinner fa-spin"></i> Loading AI insights...
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =======================
+       FINANCIAL NEWS SECTION
+  ======================= -->
+  <section id="news" class="dash-section fade-in">
+    <div class="section-header">
+      <h2><i class="fas fa-newspaper"></i> Latest Financial News</h2>
+      <p>Stay updated with breaking market news and trends</p>
+    </div>
+
+    <div class="news-grid" id="news-grid">
+      <div class="loading-card">
+        <i class="fas fa-spinner fa-spin"></i> Loading latest news...
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- =======================
+     Footer
+======================= -->
+<footer class="dashboard-footer">
+  <div class="footer-content">
+    <p>&copy; 2025 Stalkify by GIOE. All rights reserved.</p>
+    <p>Real-time AI-powered stock market intelligence</p>
+  </div>
+  <div class="footer-links">
+    <a href="/"><i class="fas fa-home"></i> Home</a>
+    <a href="#overview"><i class="fas fa-info-circle"></i> About</a>
+    <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+  </div>
+</footer>
+
+<!-- Home Button -->
+<a href="/" class="home-btn" aria-label="Go to Home">
+  <i class="fas fa-home"></i>
+</a>
+
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>
