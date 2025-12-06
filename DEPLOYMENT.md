@@ -105,7 +105,7 @@ Stalkify/
 
 **Why Netlify won't work:**
 - ❌ **No persistent server**: Netlify is for static sites and serverless functions
-- ❌ **No MySQL support**: Only limited database options
+- ❌ **No MongoDB Atlas support**: Only limited database options
 - ❌ **Flask incompatibility**: Cannot run full Python web applications
 - ❌ **Background jobs**: Cannot run the stock refresh background processes
 
@@ -117,56 +117,50 @@ Stalkify/
 
 **Why Render works perfectly:**
 - ✅ **Full Python support**: Can run Flask applications
-- ✅ **PostgreSQL database**: Free tier available
+- ✅ **MongoDB Atlas compatible**: Easy to connect to your existing Atlas database
 - ✅ **Background workers**: Can run stock refresh processes
 - ✅ **Free tier**: Enough for development/testing
 - ✅ **Easy deployment**: Git-based deployment
 
 #### **Step 1: Prepare for Render**
 
-1. **Convert from MySQL to PostgreSQL:**
-   ```bash
-   # Create requirements.txt addition
-   echo "psycopg2-binary==2.9.7" >> requirements.txt
-   ```
+1. **MongoDB Atlas is already configured:**
+   - Your connection string is already in `database_models_mongo.py`
+   - No database conversion needed - MongoDB is document-based
 
-2. **Update database_models.py:**
+2. **Update app.py for MongoDB:**
    ```python
-   # Replace mysql.connector with psycopg2
-   import psycopg2
-   from psycopg2.extras import RealDictCursor
-
-   def get_connection(self):
-       return psycopg2.connect(self.config['DATABASE_URL'])
+   # Change this line in app.py:
+   from database_models_mongo import db  # Already done!
    ```
 
 3. **Set up environment variables:**
    ```bash
    # In Render dashboard, add these environment variables:
-   # DATABASE_URL=postgresql://user:password@host:port/database
+   # MONGODB_URI=mongodb+srv://Finesse:nani@8522@stalkify.8mxgxjv.mongodb.net/?appName=stalkify
    # SECRET_KEY=your-random-secret-key-here
    # FLASK_ENV=production
    ```
 
 #### **Step 2: Deploy to Render**
 
-1. **Connect GitHub repository**
+1. **Connect your GitHub repository** (already pushed!)
 2. **Create Web Service:**
    - Runtime: Python 3
    - Build Command: `pip install -r requirements.txt`
-   - Start Command: `python app.py`
+   - Start Command: `gunicorn app:app`
    - Add environment variables
 
-3. **Create PostgreSQL database:**
-   - Add to your Render account
-   - Copy connection string to environment variables
+3. **MongoDB Atlas is ready:**
+   - Your Atlas cluster is already configured
+   - Connection string is embedded in the code
 
-4. **Update database initialization** for PostgreSQL syntax
+4. **No database setup needed** - MongoDB creates collections automatically
 
 #### **Step 3: Post-Deployment Setup**
 
-1. **Initialize database:** Run `python init_database.py`
-2. **Set up background worker** for stock refresh (if needed)
+1. **First run will create collections** automatically
+2. **Stock refresh will populate data** on first background run
 3. **Configure domain** (optional)
 
 ---

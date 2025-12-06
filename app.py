@@ -8,7 +8,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
 import time as _time
 from math import ceil
-from database_models import db
+from database_models_mongo import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 import os
